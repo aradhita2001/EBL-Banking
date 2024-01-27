@@ -1,73 +1,82 @@
+
 package com.wecp.progressive.service;
 
-import java.sql.SQLException;
-import java.util.List;
 
+import com.wecp.progressive.dao.AccountDAO;
 import com.wecp.progressive.entity.Accounts;
 
-public class AccountServiceImpl  implements AccountService{
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
-    @Override
-    public List<Accounts> getAllAccounts() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllAccounts'");
+public class AccountServiceImpl implements AccountService {
+    private AccountDAO accountDAO;
+
+    private static List<Accounts> accountsList = new ArrayList<>();
+    public AccountServiceImpl(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
     }
 
     @Override
-    public List<Accounts> getAccountsByUser(int userId) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccountsByUser'");
+    public List<Accounts> getAllAccounts() throws SQLException {
+        return accountDAO.getAllAccounts();
     }
 
     @Override
     public Accounts getAccountById(int accountId) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccountById'");
+        return accountDAO.getAccountById(accountId);
     }
 
     @Override
     public int addAccount(Accounts accounts) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addAccount'");
+        return accountDAO.addAccount(accounts);
     }
 
     @Override
     public void updateAccount(Accounts accounts) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateAccount'");
+        accountDAO.updateAccount(accounts);
     }
 
     @Override
     public void deleteAccount(int accountId) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAccount'");
+        accountDAO.deleteAccount(accountId);
     }
 
     @Override
     public List<Accounts> getAllAccountsSortedByBalance() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllAccountsSortedByBalance'");
+        List<Accounts> sortedAccounts = accountDAO.getAllAccounts();
+        if (sortedAccounts != null) {
+            sortedAccounts.sort(Comparator.comparingDouble(Accounts::getBalance)); // Sort by account balance
+        }
+        return sortedAccounts;
     }
 
-    @Override
-    public List<Accounts> getAllAccountsFromArrayList() {
-        return null;
-    }
 
     @Override
-    public List<Accounts> addAccountToArrayList(Accounts accounts) {
-        return null;
+    public List<Accounts> getAccountsByUser(int userId) throws SQLException{
+        return accountDAO.getAllAccounts();
     }
 
     @Override
     public List<Accounts> getAllAccountsSortedByBalanceFromArrayList() {
-        return null;
+        List<Accounts> sortedAccounts = accountsList;
+        sortedAccounts.sort(Comparator.comparingDouble(Accounts::getBalance)); // Sort by account balance
+        return sortedAccounts;
     }
 
     @Override
     public void emptyArrayList() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'emptyArrayList'");
+        accountsList = new ArrayList<>();
     }
 
+    @Override
+    public List<Accounts> getAllAccountsFromArrayList() {
+        return accountsList;
+    }
+    @Override
+    public List<Accounts> addAccountToArrayList(Accounts accounts) {
+        accountsList.add(accounts);
+        return accountsList;
+    }
 }

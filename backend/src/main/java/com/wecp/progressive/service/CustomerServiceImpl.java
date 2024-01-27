@@ -1,67 +1,78 @@
 package com.wecp.progressive.service;
 
-import java.sql.SQLException;
-import java.util.List;
 
+import com.wecp.progressive.dao.CustomerDAO;
+import com.wecp.progressive.dao.CustomerDAOImpl;
 import com.wecp.progressive.entity.Customers;
 
-public class CustomerServiceImpl implements CustomerService{
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class CustomerServiceImpl implements CustomerService {
+
+    CustomerDAO customerDAO;
+    private static List<Customers> customersList = new ArrayList<>();
+
+    public CustomerServiceImpl(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
+    }
 
     @Override
     public List<Customers> getAllCustomers() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllCustomers'");
+        return customerDAO.getAllCustomers();
     }
 
     @Override
     public Customers getCustomerById(int customerId) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCustomerById'");
+        return customerDAO.getCustomerById(customerId);
     }
 
     @Override
     public int addCustomer(Customers customers) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addCustomer'");
+        return customerDAO.addCustomer(customers);
     }
 
     @Override
     public void updateCustomer(Customers customers) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateCustomer'");
+        customerDAO.updateCustomer(customers);
     }
 
     @Override
     public void deleteCustomer(int customerId) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteCustomer'");
+        customerDAO.deleteCustomer(customerId);
     }
 
     @Override
     public List<Customers> getAllCustomersSortedByName() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllCustomersSortedByName'");
+        List<Customers> sortedCustomers = customerDAO.getAllCustomers();
+        if (sortedCustomers != null) {
+            Collections.sort(sortedCustomers);
+        }
+        return sortedCustomers;
     }
 
     @Override
     public List<Customers> getAllCustomersFromArrayList() {
-        return null;
+        return customersList;
     }
 
     @Override
     public List<Customers> addCustomersToArrayList(Customers customers) {
-        return null;
+        customersList.add(customers);
+        return customersList;
     }
 
     @Override
-    public List<Customers> getAllCustomersSortedByNameFromArrayList() {
-        return null;
+    public List<Customers> getAllCustomersSortedByNameFromArrayList(){
+        List<Customers> sortedCustomers = customersList;
+        Collections.sort(sortedCustomers);
+        return sortedCustomers;
     }
 
     @Override
     public void emptyArrayList() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'emptyArrayList'");
+        customersList = new ArrayList<>();
     }
-
 }
